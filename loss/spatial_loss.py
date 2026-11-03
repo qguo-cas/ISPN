@@ -5,7 +5,7 @@ from torch import nn
 from torch.nn import functional as F
 
 
-class UIQILoss(nn.Module):
+class SSIMLoss(nn.Module):
     def forward(self, reference, prediction, ws=11):
         if reference.shape != prediction.shape or reference.ndim != 4:
             raise ValueError("UIQI inputs must have identical BCHW shapes.")
