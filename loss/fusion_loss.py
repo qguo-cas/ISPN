@@ -10,7 +10,7 @@ from .spectral_loss import SAMLoss
 class FusionLoss(nn.Module):
     def __init__(self, window_size=11):
         super().__init__()
-        self.spatial = UIQILoss()
+        self.spatial = SSIMLoss()
         self.spectral = SAMLoss()
         self.window_size = window_size
 
@@ -26,5 +26,5 @@ class FusionLoss(nn.Module):
                           F.softmax(residual_fused, dim=-1), reduction="none")
         prior = kl_map.flatten(1).sum(dim=1).mean()
         # The old objective applied 0.1 to KL twice, giving an effective 0.01.
-        total = 0.1 * spatial + 0.8 * spectral + 0.01 * prior
+        total = 0.1 * spatial + 0.8 * spectral + 0.1 * prior
         return {"loss": total, "spatial": spatial, "spectral": spectral, "prior": prior}
